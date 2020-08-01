@@ -16,8 +16,12 @@ namespace interLink
             List<string> uniqueDate = new List<string>();        // For unique dates
             List<string> uniqueEmployees = new List<string>();   // For unique employees
 
-            // Reading from file
+            readFromFile(employeesList, uniqueDate);
+            writeToFile(employeesList, uniqueDate, uniqueEmployees);
+        }
 
+        public static void readFromFile (List<Employee> employeesList, List<string> uniqueDate)
+        {
             using (var reader = new StreamReader("acme_worksheet.csv"))
             {
                 reader.ReadLine();
@@ -31,19 +35,19 @@ namespace interLink
                     employeesList.Add(obj);
 
                     // filling the list of unique date
-                    if (!uniqueDate.Contains(obj.date))  
+                    if (!uniqueDate.Contains(obj.date))
                     {
                         uniqueDate.Add(obj.date);
                     }
                 }
             }
+        }
 
-            // Writing to file
-
+        public static void writeToFile(List<Employee> employeesList, List<string> uniqueDate, List<string> uniqueEmployees)
+        {
             using (var writer = new StreamWriter("newSheet.csv", false))
             {
                 //First row
-
                 writer.Write("Name/Date");
                 for (int i = 0; i < uniqueDate.Count; i++)
                 {
@@ -51,7 +55,6 @@ namespace interLink
                 }
 
                 //Next rows
-
                 for (int i = 0; i < employeesList.Count; i++)
                 {
                     if (!uniqueEmployees.Contains(employeesList[i].name))  // checking if the employee not registered yet
